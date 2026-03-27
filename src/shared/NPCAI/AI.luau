@@ -59,7 +59,7 @@ function AI.new(rig, team)
 	self.directionSelector.index = 1 -- Починаємо з "front"
 	
 	-- Ініціалізуємо систему кулі
-    self.AttachmentForBullet = self:GetAttachment(rig:WaitForChild("Tool",3))-- 
+    self.AttachmentForBullet = self:GetAttachment(rig:WaitForChild("Pistol",3))-- 
 
 
 	self.bulletController = BulletController.new(workspace, false, "Enemy")
@@ -76,8 +76,22 @@ function AI.new(rig, team)
   
 end
 
-
-function AI:GetAttachment(tool)
+--# get Model rig,  find tool and return them or nil
+local function GetTool(model)
+    for _, obj in ipairs(model:GetChildren()) do 
+        if obj:IsA("Tool") then
+            return obj
+        end
+    end
+    return nil
+    
+end
+function AI:GetAttachment()
+    local tool = GetTool(self.rig)
+    if not tool then
+        print('Все пропало? tool doesn`t find)')
+        return
+    end
     local AttachmentForBullet =  tool:WaitForChild("AttachmentForBullet")
     if AttachmentForBullet then
        
